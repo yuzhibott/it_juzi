@@ -4,12 +4,13 @@ import requests
 import time
 import  pymongo
 import random
+from get_cookie import get_cookie
 
 # 在最左边是在python 中对象的名称，后面的是在数据库中的名称
 client = pymongo.MongoClient('localhost',27017)
-itorange = client['itorange']
-url_list = itorange['url_itorange']
-item_info = itorange['item_itorange']
+itorange = client['it_juzi']
+url_list = itorange['url_it_juzi']
+item_info = itorange['item_it_juzi']
 ip_list = client['ip_list']
 my_iplist = ip_list['ip_list2']
 
@@ -27,7 +28,7 @@ proxy_list = [
 headers_1 = \
     {
         'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
-        'Cookie':'gr_user_id=72f30897-e2a7-4ebd-a4b6-36559bdab076; identity=kzt120707%40163.com; remember_code=LrMY6B82uN; acw_tc=AQAAANZZtmPSagEAWgJJ36MyrjaR7b6n; session=3b59476b105beb94e3985da08c1b414f888fbeea; acw_sc=5814082bf6d44062410b7ddc26cbcdf766d859bd; _gat=1; Hm_lvt_1c587ad486cdb6b962e94fc2002edf89=1477212179,1477311499,1477577809,1477707820; Hm_lpvt_1c587ad486cdb6b962e94fc2002edf89=1477708065; gr_session_id_eee5a46c52000d401f969f4535bdaa78=c2b1f94e-9308-4430-ba85-11f9552202df; _ga=GA1.2.1785082626.1476178721',
+        # 'Cookie':'gr_user_id=72f30897-e2a7-4ebd-a4b6-36559bdab076; identity=kzt120707%40163.com; remember_code=LrMY6B82uN; acw_tc=AQAAANZZtmPSagEAWgJJ36MyrjaR7b6n; session=3b59476b105beb94e3985da08c1b414f888fbeea; acw_sc=5814082bf6d44062410b7ddc26cbcdf766d859bd; _gat=1; Hm_lvt_1c587ad486cdb6b962e94fc2002edf89=1477212179,1477311499,1477577809,1477707820; Hm_lpvt_1c587ad486cdb6b962e94fc2002edf89=1477708065; gr_session_id_eee5a46c52000d401f969f4535bdaa78=c2b1f94e-9308-4430-ba85-11f9552202df; _ga=GA1.2.1785082626.1476178721',
         'Connection':'keep-alive',
         # 'Host':'www.itjuzi.com',
         'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -46,12 +47,11 @@ headers_2 = {
 
 #spider 1
 def get_links_from(url,pages):
+    cookdic = get_cookie()
     list_view = '{}?page={}'.format(url,str(pages))
     headers_1.update({'Referer':list_view})
     proxies = random.choice(ip_all)
-    stime = random.randint(1,3)
-    time.sleep(stime)
-    wb_data = requests.get(list_view,headers=headers_1,timeout=5)
+    wb_data = requests.get(list_view,headers=headers_1,cookies=cookdic,timeout=10)
     soup = BeautifulSoup(wb_data.text,'lxml')
     if soup.find('p','title'):
         for link in soup.select('p.title a'):
@@ -88,7 +88,7 @@ def get_item_info(url):
         # print('更换ip...')
 
 
-get_links_from('http://www.itjuzi.com/company',7)
+# get_links_from('http://www.itjuzi.com/company',7)
 #get_item_info('http://www.itjuzi.com/company/4773')
 
 

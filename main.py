@@ -12,22 +12,28 @@ rest_of_urls = x - y
 
 url_channel = "http://www.itjuzi.com/company"
 url_all = []
+get_pages = 0
+get_items = 1
+
 
 def get_all_links_from(url):
-    for num in range(11,3407):
+    for num in range(1,4200):
         print(num)
         get_links_from(url,num)
 
 if __name__=='__main__':
+    mytask = get_pages
     pool = Pool(processes=4)  #自动分配进程
-    pool.map(get_all_links_from,url_channel.split())
-    # for a in url_list.find({},{'url':1,'_id':0}):
-    #     url_all.append(a['url'])
-    # print('剩余:', len(rest_of_urls))
-    # pool.map(get_item_info,rest_of_urls)
+
+    if mytask == get_pages:    #获取页面链接
+        pool.map(get_all_links_from,url_channel.split())
+    else:                     #获取公司细节
+        for a in url_list.find({},{'url':1,'_id':0}):
+            url_all.append(a['url'])
+        print('剩余:', len(rest_of_urls))
+        pool.map(get_item_info,rest_of_urls)
     pool.close()
     pool.join()
     # get_all_links_from(url_channel)
-
 
 
