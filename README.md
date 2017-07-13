@@ -16,3 +16,6 @@
 ##2016.12.19
 <br />1,增加了模拟浏览器登录，自动获取cookie的功能<br />
 <br />2,修改了部分代码<br />
+
+<br />最终效果图：<br />
+<br />https://yuntu.amap.com/share/FR7jua<br />
